@@ -318,6 +318,19 @@ details[open]>:not(summary){animation:abre var(--d3) var(--ease)}
 .leg-sem span{display:inline-flex;align-items:center;gap:6px}
 .leg-sem i{width:14px;height:10px;border-radius:2px;display:inline-block}
 
+/* rotina por horários (Meu dia) */
+.slots{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.slot{border:0;font:inherit;font-size:var(--fs-xs);font-weight:600;font-variant-numeric:tabular-nums;padding:2px 7px;border-radius:var(--r-sm);background:var(--n100);color:var(--n700);cursor:pointer;transition:background var(--d1) var(--ease),transform var(--d1) var(--ease)}
+.slot:hover{transform:translateY(-1px)}
+.slot.ok{background:var(--ok-50);color:var(--ok-txt)}
+.slot.atraso{background:#FBF0D2;color:var(--alerta)}
+.slot.nao_feita{background:var(--marca);color:#fff}
+.slot.agora{background:var(--n900);color:#fff}
+.slot.andamento{background:var(--vinho);color:#fff}
+.semana .parcial b{background:linear-gradient(90deg,var(--ok) 0 50%,var(--marca) 50% 100%)}
+.freq{display:flex;gap:var(--s4);flex-wrap:wrap;margin-top:6px}
+.freq label{display:inline-flex;align-items:center;gap:6px;font-weight:500;cursor:pointer}
+
 /* equipe */
 .eq-linha,.eq-regua{display:grid;grid-template-columns:210px 1fr 230px;gap:var(--s5)}
 .eq-linha{align-items:center;padding:var(--s4) var(--s6);border-top:1px solid var(--borda-suave)}
@@ -832,6 +845,28 @@ function itemTarefa(t, comResp) {
     prazo + (t.modelo_id ? '<span>Rotina' + (t.data_ref && t.data_ref !== S.st.hoje ? ' de ' + fDia(t.data_ref) : '') + '</span>' : (t.categoria ? '<span>' + esc(t.categoria) + '</span>' : '')) + tags(t) + '</div></div>' +
     tempoTarefa(t) + '<div class="acs">' + botoesTarefa(t, true) + '</div></div>';
 }
+/* rotina com horários fixos vira uma linha só: os horários em chips e as ações do horário atual */
+function agruparRotinas(l) {
+  var g = {}, ordem = [];
+  l.forEach(function (t) { var k = t.horario_ref ? t.modelo_id : t.tarefa_id; if (!g[k]) { g[k] = []; ordem.push(k); } g[k].push(t); });
+  return ordem.map(function (k) { return g[k].sort(function (a, b) { return (a.horario_ref || '').localeCompare(b.horario_ref || ''); }); });
+}
+function itemRotinaHorarios(g) {
+  var atual = g.find(function (t) { return t.status === 'Em andamento'; }) || g.find(function (t) { return ['Não iniciada', 'Em pausa', 'Aguardando terceiros'].indexOf(t.status) >= 0; });
+  var feitas = g.filter(function (t) { return t.status === 'Concluída'; }).length;
+  var perdidas = g.filter(function (t) { return t.nao_executada; }).length;
+  var chip = function (t) {
+    var c = t.status === 'Concluída' ? (Date.parse(t.concluido_em) <= Date.parse(t.prazo) ? 'ok' : 'atraso') : (t.nao_executada ? 'nao_feita' : (t.status === 'Em andamento' ? 'andamento' : (t === atual ? 'agora' : '')));
+    var h = t.horario_ref, txt = Number(h.slice(0, 2)) + (h.slice(3) !== '00' ? ':' + h.slice(3) : '') + 'h';
+    return '<button class="slot ' + c + '" data-a="abrir" data-id="' + t.tarefa_id + '" title="' + txt + ': ' + esc(t.status) + (t.nao_executada ? ' (não executada)' : '') + '">' + txt + '</button>';
+  };
+  return '<div class="it' + (atual && atual.rodando_desde ? ' rod' : '') + '" data-a="abrir" data-id="' + (atual || g[g.length - 1]).tarefa_id + '" role="button" tabindex="0" aria-label="' + esc(g[0].titulo) + '">' +
+    '<span class="pr pr' + prioIdx(g[0].prioridade) + '"></span><div style="min-width:0"><div class="tt">' + esc(g[0].titulo) + '</div>' +
+    '<div class="mt"><span>' + feitas + ' de ' + g.length + ' feitas' + (perdidas ? ', ' + perdidas + ' não executada' + (perdidas > 1 ? 's' : '') : '') + '</span>' +
+    (atual ? '<span' + (atual.atrasada ? ' class="atrasado"' : '') + '>agora: ' + esc(atual.horario_ref) + ', até ' + fH(atual.prazo) + '</span>' : '<span>todos os horários do dia passaram</span>') + '</div>' +
+    '<div class="slots">' + g.map(chip).join('') + '</div></div>' +
+    (atual ? tempoTarefa(atual) : '<span></span>') + '<div class="acs">' + (atual ? botoesTarefa(atual, true) : '') + '</div></div>';
+}
 function ordenar(l) {
   var o = { 'Em andamento': 0, 'Em pausa': 1, 'Não iniciada': 2, 'Aguardando terceiros': 3, 'Concluída': 4, 'Cancelada': 5 };
   return l.slice().sort(function (a, b) {
@@ -853,7 +888,7 @@ function vDia() {
     acs = (t ? botoesTarefa(t, false) + '<button class="btn" data-a="aguardar" data-id="' + t.tarefa_id + '">Aguardar terceiros</button>' : '') +
       '<button class="btn" data-a="int_ini">Fazer intervalo</button><button class="btn lim" data-a="exp_fim">Encerrar expediente</button>';
   }
-  var eRotHoje = function (t) { return t.modelo_id && t.data_ref === st.hoje && t.status !== 'Cancelada'; };
+  var eRotHoje = function (t) { return t.modelo_id && t.data_ref === st.hoje && (t.status !== 'Cancelada' || t.nao_executada); };
   var rotHoje = st.tarefas.filter(function (t) { return t.responsavel_id === st.me.usuario_id && eRotHoje(t); })
     .sort(function (a, b) { return (a.status === 'Concluída') - (b.status === 'Concluída') || (Date.parse(a.prazo) || 9e15) - (Date.parse(b.prazo) || 9e15); });
   var feitas = rotHoje.filter(function (t) { return t.status === 'Concluída'; }).length;
@@ -861,8 +896,8 @@ function vDia() {
   var ini0 = Date.parse(st.hoje + 'T00:00:00-03:00');
   var concl = st.tarefas.filter(function (t) { return t.responsavel_id === st.me.usuario_id && t.status === 'Concluída' && Date.parse(t.concluido_em) >= ini0 && !eRotHoje(t); });
   var blocoRot = rotHoje.length ? '<section class="bloco"><div class="cab"><h3>Rotinas de hoje</h3><span class="sec2 pq">' + feitas + ' de ' + rotHoje.length + ' feitas</span></div>' +
-    '<div class="rot-progresso" aria-hidden="true">' + rotHoje.map(function (t) { return '<i class="' + (t.status === 'Concluída' ? 'f' : (t.atrasada ? 'a' : '')) + '"></i>'; }).join('') + '</div>' +
-    '<div class="lista">' + rotHoje.map(function (t) { return itemTarefa(t, false); }).join('') + '</div></section>' : '';
+    '<div class="rot-progresso" aria-hidden="true">' + rotHoje.slice().sort(function (a, b) { return (Date.parse(a.prazo) || 0) - (Date.parse(b.prazo) || 0); }).map(function (t) { return '<i class="' + (t.status === 'Concluída' ? 'f' : (t.atrasada || t.nao_executada ? 'a' : '')) + '"></i>'; }).join('') + '</div>' +
+    '<div class="lista">' + agruparRotinas(rotHoje).map(function (g) { return g.length > 1 ? itemRotinaHorarios(g) : itemTarefa(g[0], false); }).join('') + '</div></section>' : '';
   var atr = minhas.filter(function (t) { return t.atrasada; }).length;
   var fimJ = Date.parse(st.hoje + 'T' + (st.me.jornada_fim || '18:00') + ':00-03:00');
   var aviso = !st.fechamentoHoje && agoraMs() > fimJ - 30 * 60000 && pode('fechamento.proprio')
@@ -1034,6 +1069,11 @@ function textoDias(d) {
   if (k === '0,1,2,3,4,5,6') return 'Todos os dias';
   return d.slice().sort().map(function (x) { return DIAS[x]; }).join(', ');
 }
+function textoFreq(x) {
+  if (!x.horarios || !x.horarios.length) return x.hora_prazo ? 'até ' + esc(x.hora_prazo) : 'até o fim da jornada';
+  var hs = x.horarios.map(function (h) { return Number(h.slice(0, 2)) + (h.slice(3) !== '00' ? ':' + h.slice(3) : '') + 'h'; });
+  return x.horarios.length + (x.horarios.length === 1 ? ' vez' : ' vezes') + ' ao dia (' + hs.join(', ') + ')';
+}
 var SEM_TXT = { ok: 'feita no prazo', atraso: 'feita com atraso', nao_feita: 'não feita', pendente: 'pendente hoje', livre: 'não prevista', antes: 'antes da rotina existir', nao_gerada: 'não gerada', cancelada: 'cancelada' };
 function vRotinas() {
   var r = S.rot;
@@ -1042,14 +1082,15 @@ function vRotinas() {
   if (!r.rotinas.length) return cab + '<div class="lista vazio">' + (r.gerencia ? 'Nenhuma rotina ainda. Crie a primeira e ela aparece hoje mesmo no Meu dia do responsável.' : 'Você ainda não tem rotinas.') + '</div>';
   return cab + '<section class="lista">' + r.rotinas.map(function (x) {
     return '<div class="rot-lin' + (x.ativo ? '' : ' off') + '"><div style="min-width:0"><div class="tt">' + esc(x.titulo) + (x.ativo ? '' : ' <span class="tag cinza">Pausada</span>') + '</div>' +
-      '<div class="mt">' + esc(x.responsavel) + ', ' + textoDias(x.dias).toLowerCase() + (x.hora_prazo ? ', até ' + esc(x.hora_prazo) : ', até o fim da jornada') + (x.estimado_min ? ', cerca de ' + fMin(x.estimado_min) : '') + '</div></div>' +
+      '<div class="mt">' + esc(x.responsavel) + ', ' + textoDias(x.dias).toLowerCase() + ', ' + textoFreq(x) + (x.estimado_min ? ', cerca de ' + fMin(x.estimado_min) + (x.horarios.length ? ' cada' : '') : '') +
+      (x.vigente_desde && x.vigente_desde > S.st.hoje ? '. Começa em ' + fDia(x.vigente_desde) : '') + '</div></div>' +
       '<div class="semana" aria-label="Últimos 7 dias">' + x.hist.map(function (h) {
         var wd = new Date(Date.parse(h.dia + 'T12:00:00-03:00')).getUTCDay();
-        return '<div class="' + h.s + '" title="' + fDia(h.dia) + ': ' + SEM_TXT[h.s] + '">' + DIAS[wd].slice(0, 3) + '<b></b></div>';
+        return '<div class="' + h.s + '" title="' + fDia(h.dia) + ': ' + (h.total ? h.feitas + ' de ' + h.total + ' feitas' : SEM_TXT[h.s]) + '">' + DIAS[wd].slice(0, 3) + '<b></b></div>';
       }).join('') + '</div>' +
       '<div class="acs">' + (r.gerencia ? '<button class="btn pq" data-a="editarotina" data-id="' + x.rotina_id + '">Editar</button><button class="btn lim pq" data-a="alternarotina" data-id="' + x.rotina_id + '">' + (x.ativo ? 'Pausar' : 'Reativar') + '</button>' : '') + '</div></div>';
   }).join('') + '</section>' +
-    '<div class="leg-sem"><span><i style="background:var(--ok)"></i>Feita no prazo</span><span><i style="background:#E0A000"></i>Feita com atraso</span><span><i style="background:var(--marca)"></i>Não feita</span><span><i style="box-shadow:inset 0 0 0 2px var(--tinta)"></i>Pendente hoje</span><span><i style="background:repeating-linear-gradient(90deg,var(--linha) 0 3px,transparent 3px 6px)"></i>Não prevista</span></div>';
+    '<div class="leg-sem"><span><i style="background:var(--ok)"></i>Feita no prazo</span><span><i style="background:#E0A000"></i>Feita com atraso</span><span><i style="background:var(--marca)"></i>Não feita</span><span><i style="box-shadow:inset 0 0 0 2px var(--tinta)"></i>Pendente hoje</span><span><i style="background:linear-gradient(90deg,var(--ok) 0 50%,var(--marca) 50% 100%)"></i>Parte feita</span><span><i style="background:repeating-linear-gradient(90deg,var(--n200) 0 3px,transparent 3px 6px)"></i>Não prevista</span></div>';
 }
 function janelaRotina(x) {
   var st = S.st, novo = !x;
@@ -1059,22 +1100,31 @@ function janelaRotina(x) {
   janela('<div class="gcab"><h2>' + (novo ? 'Nova rotina' : 'Editar rotina') + '</h2><button class="btn lim" data-a="fecha">Fechar</button></div><div class="grade">' +
     '<label class="campo tudo"><span>O que precisa ser feito</span><input class="inp" id="r_tit" maxlength="200" value="' + esc(x.titulo) + '" placeholder="Ex.: Atualizar aba Estágio da Base SV"></label>' +
     '<label class="campo"><span>Responsável</span><select class="inp" id="r_resp">' + pessoas.map(function (u) { return '<option value="' + u.usuario_id + '"' + (u.usuario_id === x.responsavel_id ? ' selected' : '') + '>' + esc(u.nome) + '</option>'; }).join('') + '</select></label>' +
-    '<label class="campo"><span>Horário-limite</span><input class="inp" type="time" id="r_hora" value="' + esc(x.hora_prazo) + '"></label>' +
+    '<label class="campo"><span>Começa em</span><input class="inp" type="date" id="r_ini" value="' + esc(x.vigente_desde || '') + '"></label>' +
+    '<div class="campo tudo"><span>Quantas vezes por dia</span><div class="freq" role="radiogroup">' +
+      '<label><input type="radio" name="r_freq" value="uma"' + (x.horarios && x.horarios.length ? '' : ' checked') + '> Uma vez</label>' +
+      '<label><input type="radio" name="r_freq" value="horarios"' + (x.horarios && x.horarios.length ? ' checked' : '') + '> Em horários fixos</label></div></div>' +
+    '<label class="campo tudo" id="r_uma"' + (x.horarios && x.horarios.length ? ' style="display:none"' : '') + '><span>Horário-limite</span><input class="inp" type="time" id="r_hora" value="' + esc(x.hora_prazo) + '" style="max-width:200px"></label>' +
+    '<div class="campo tudo" id="r_hs"' + (x.horarios && x.horarios.length ? '' : ' style="display:none"') + '><span>Horários (cada um tem ' + (S.st.config.tolerancia_min || 30) + ' min de tolerância)</span><div class="dias">' +
+      ['07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00'].map(function (h) { return '<label><input type="checkbox" class="r_h" value="' + h + '"' + ((x.horarios || []).indexOf(h) >= 0 ? ' checked' : '') + '><span>' + Number(h.slice(0, 2)) + 'h</span></label>'; }).join('') + '</div></div>' +
     '<div class="campo tudo"><span>Dias da semana</span><div class="dias">' + ordem.map(function (d) { return '<label><input type="checkbox" class="r_dia" value="' + d + '"' + (x.dias.indexOf(d) >= 0 ? ' checked' : '') + '><span>' + DIAS[d] + '</span></label>'; }).join('') + '</div></div>' +
     '<label class="campo"><span>Prioridade</span><select class="inp" id="r_prio">' + st.config.prioridades.map(function (p) { return '<option' + (p === x.prioridade ? ' selected' : '') + '>' + esc(p) + '</option>'; }).join('') + '</select></label>' +
     '<label class="campo"><span>Tempo estimado, em minutos</span><input class="inp" type="number" min="0" id="r_est" value="' + esc(x.estimado_min) + '"></label>' +
     '<label class="campo tudo"><span>Passos ou observações</span><textarea class="inp" id="r_desc">' + esc(x.descricao) + '</textarea></label></div>' +
-    '<p class="sec2 pq" style="margin:12px 0 0">Sem horário-limite, o prazo é o fim da jornada do responsável. A rotina de hoje é criada assim que você salvar, se hoje for um dos dias.</p>' +
+    '<p class="sec2 pq" style="margin:12px 0 0">Uma vez por dia sem horário-limite: o prazo é o fim da jornada do responsável. Em horários fixos: um horário que nem for iniciado até 1 h depois do prazo é encerrado como não executado. Sem data de início, a de hoje é criada assim que você salvar.</p>' +
     '<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:18px"><button class="btn" data-a="fecha">Cancelar</button><button class="btn pri" data-a="salvarotina" data-id="' + (x.rotina_id || '') + '">' + (novo ? 'Criar rotina' : 'Salvar rotina') + '</button></div>');
   $('#r_tit').focus();
 }
 function salvarRotina(id) {
   var dias = Array.prototype.map.call(document.querySelectorAll('.r_dia:checked'), function (c) { return Number(c.value); });
   var bt = $('[data-a=salvarotina]');
+  var porHorario = (document.querySelector('input[name=r_freq]:checked') || {}).value === 'horarios';
+  var horarios = porHorario ? Array.prototype.map.call(document.querySelectorAll('.r_h:checked'), function (c) { return c.value; }) : [];
+  if (porHorario && !horarios.length) { bt.classList.remove('carregando'); toast('Escolha ao menos um horário.', 'erro'); return; }
   if (!validar('r_tit', $('#r_tit').value.trim(), 'Escreva o que precisa ser feito.')) { bt.classList.remove('carregando'); return; }
   if (!dias.length) { bt.classList.remove('carregando'); toast('Escolha ao menos um dia da semana.', 'erro'); return; }
   var atual = id ? S.rot.rotinas.find(function (r) { return r.rotina_id === id; }) : null;
-  api('rotina_salvar', { rotina_id: id || '', titulo: $('#r_tit').value, responsavel_id: $('#r_resp').value, hora_prazo: $('#r_hora').value, dias: dias,
+  api('rotina_salvar', { rotina_id: id || '', titulo: $('#r_tit').value, responsavel_id: $('#r_resp').value, hora_prazo: porHorario ? '' : $('#r_hora').value, horarios: horarios, vigente_desde: $('#r_ini').value, dias: dias,
     prioridade: $('#r_prio').value, estimado_min: $('#r_est').value, descricao: $('#r_desc').value, categoria: 'Rotina', ativo: atual ? atual.ativo : true }, true)
     .then(function (d) { if (d) { S.rot = d; fechar(); toast(id ? 'Rotina salva.' : 'Rotina criada.', 'ok'); atualizar(); } });
 }
@@ -1290,6 +1340,7 @@ document.addEventListener('input', function (ev) {
 });
 document.addEventListener('change', function (ev) {
   var id = ev.target.id;
+  if (ev.target.name === 'r_freq') { var hz = ev.target.value === 'horarios'; $('#r_hs').style.display = hz ? '' : 'none'; $('#r_uma').style.display = hz ? 'none' : ''; }
   if (id === 'fresp') { S.f.resp = ev.target.value; render(); }
   if (id === 'fprio') { S.f.prio = ev.target.value; render(); }
   if (id === 'fconcl') { S.f.concl = ev.target.checked; render(); }
