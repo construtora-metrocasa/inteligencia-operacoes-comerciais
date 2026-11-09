@@ -331,6 +331,63 @@ details[open]>:not(summary){animation:abre var(--d3) var(--ease)}
 .freq{display:flex;gap:var(--s4);flex-wrap:wrap;margin-top:6px}
 .freq label{display:inline-flex;align-items:center;gap:6px;font-weight:500;cursor:pointer}
 
+/* dicas */
+#dica{position:fixed;left:0;top:0;z-index:95;max-width:280px;background:var(--n900);color:#fff;font-size:var(--fs-sm);line-height:1.4;padding:7px 11px;border-radius:var(--r-md);box-shadow:var(--e2);pointer-events:none;opacity:0;transition:opacity var(--d1) var(--ease)}
+#dica.on{opacity:1}
+.info{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--n100);color:var(--n700);font-size:11px;font-weight:700;cursor:help;margin-left:4px;vertical-align:1px;flex:none}
+.info:hover,.info:focus-visible{background:var(--n900);color:#fff}
+.tag.livre{background:#EEF0FB;color:#3B4AA6}
+
+/* início */
+.boas{display:grid;grid-template-columns:1fr auto;gap:var(--s6);align-items:center;padding:var(--s7);position:relative;overflow:hidden}
+.boas .data{font-weight:600;color:var(--texto-2)}
+.boas h1{font-size:40px;line-height:1.05;font-stretch:85%;font-weight:800;margin:6px 0 10px}
+.boas p.res{font-size:var(--fs-md);max-width:58ch;margin:0;color:var(--n700)}
+.boas .acoes{display:flex;flex-wrap:wrap;gap:var(--s2);margin-top:var(--s5)}
+.boas.entra-1 h1,.boas.entra-1 .data,.boas.entra-1 p.res,.boas.entra-1 .acoes{animation:sobe var(--d3) var(--ease) both}
+.boas.entra-1 p.res{animation-delay:60ms}.boas.entra-1 .acoes{animation-delay:120ms}
+.anel{position:relative;width:132px;height:132px;flex:none}
+.anel svg{width:100%;height:100%;transform:rotate(-90deg)}
+.anel circle{fill:none;stroke-width:10}
+.anel .fundo-anel{stroke:var(--n100)}
+.anel .valor{stroke:var(--ok);stroke-linecap:round;transition:stroke-dashoffset .6s var(--ease);animation:anelEntra .8s var(--ease) both}
+.anel .meio{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.anel .meio b{font-size:30px;font-stretch:65%;line-height:1}
+.anel .meio span{font-size:var(--fs-xs);color:var(--texto-2);margin-top:2px}
+@keyframes anelEntra{from{stroke-dashoffset:var(--c)}}
+.inicio-grade{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:var(--s5);margin-top:var(--s5);align-items:start}
+.carga .barra-carga{position:relative;height:14px;border-radius:7px;background:var(--n100);overflow:hidden;margin:var(--s3) 0 var(--s2)}
+.carga .barra-carga i{position:absolute;left:0;top:0;bottom:0;border-radius:7px;background:var(--vinho);transition:width .6s var(--ease)}
+.carga .barra-carga i.excede{background:var(--marca)}
+.carga .num-grande{font-size:var(--fs-2xl);font-stretch:70%;font-weight:700;line-height:1;white-space:nowrap}
+.plano{list-style:none;margin:0;padding:0}
+.plano li{display:grid;grid-template-columns:54px 1fr;gap:var(--s3);padding:10px 0;border-top:1px solid var(--borda-suave);align-items:start;transition:opacity var(--d2) var(--ease)}
+.plano li:first-child{border-top:0}
+.plano li.passou{opacity:.55}
+.plano li.agora{background:linear-gradient(90deg,var(--marca-50),transparent 70%);margin:0 calc(-1 * var(--s6));padding-left:calc(var(--s6) - 3px);padding-right:var(--s6);border-left:3px solid var(--marca)}
+.plano .hora{font-weight:700;font-stretch:80%;font-variant-numeric:tabular-nums;color:var(--texto-2);padding-top:3px}
+.plano li.agora .hora{color:var(--marca)}
+.plano .itens{display:flex;flex-wrap:wrap;gap:6px}
+.pi{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--borda);background:var(--superficie);border-radius:var(--r-md);padding:4px 9px;font-size:var(--fs-sm);font-weight:500;cursor:pointer;transition:border-color var(--d1) var(--ease),transform var(--d1) var(--ease)}
+.pi:hover{border-color:var(--n300);transform:translateY(-1px)}
+.pi .st{width:8px;height:8px;border-radius:50%;background:var(--n300);flex:none}
+.pi.ok .st{background:var(--ok)}.pi.perdida .st{background:var(--marca)}.pi.atrasada{border-color:var(--marca)}.pi.atrasada .st{background:var(--marca)}
+.pi.ok{color:var(--texto-2);text-decoration:line-through;text-decoration-color:rgba(0,0,0,.25)}
+.pi.perdida{color:var(--texto-2)}
+.pi.rodando{border-color:var(--vinho);background:#FBF4F4}.pi.rodando .st{background:var(--vinho);animation:pulsa 1.6s ease-in-out infinite}
+.plano .livre{color:var(--texto-2);font-size:var(--fs-sm);padding-top:4px}
+.eq-mini{display:flex;align-items:center;gap:var(--s3);padding:10px 0;border-top:1px solid var(--borda-suave)}
+.eq-mini:first-child{border-top:0}
+.eq-mini b{flex:none}
+.eq-mini .oq{flex:1;min-width:0;display:flex;align-items:center;gap:6px;overflow:hidden}
+.eq-mini .oq span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* resumo: para onde foi o tempo */
+.tipo-linha{display:grid;grid-template-columns:120px 1fr 70px;gap:var(--s4);align-items:center;padding:10px 0;border-top:1px solid var(--borda-suave)}
+.tipo-linha:first-of-type{border-top:0}
+.tipo-barra{display:flex;height:22px;border-radius:var(--r-sm);overflow:hidden;background:var(--n100)}
+.tipo-barra i{display:flex;align-items:center;justify-content:center;font-style:normal;font-size:11px;font-weight:700;color:#fff;min-width:0;overflow:hidden;white-space:nowrap}
+.tipo-barra .rotina{background:var(--vinho)}.tipo-barra .projeto{background:var(--marca)}.tipo-barra .demanda{background:var(--n300);color:var(--n900)}
+
 /* equipe */
 .eq-linha,.eq-regua{display:grid;grid-template-columns:210px 1fr 230px;gap:var(--s5)}
 .eq-linha{align-items:center;padding:var(--s4) var(--s6);border-top:1px solid var(--borda-suave)}
@@ -350,7 +407,7 @@ details[open]>:not(summary){animation:abre var(--d3) var(--ease)}
 .grandes div:first-child{border-left:0}
 .grandes b{display:block;font-size:40px;line-height:1;font-stretch:65%;font-weight:700;font-variant-numeric:tabular-nums}
 .grandes b.r{color:var(--marca)}
-.grandes span{display:block;font-weight:600;margin-top:6px}
+.grandes span{display:flex;align-items:center;font-weight:600;margin-top:6px}
 .grandes small{display:block;color:var(--texto-2);font-size:var(--fs-sm)}
 .duas{display:grid;grid-template-columns:1fr 1fr;gap:var(--s5)}
 svg.graf text{font-family:var(--fonte);font-size:12px;fill:var(--texto-2)}
@@ -412,6 +469,12 @@ svg.graf.anima rect{animation:cresce var(--d3) var(--ease) both}
   #toast{bottom:84px}
 }
 @media (max-width:900px){
+  .boas{grid-template-columns:1fr;padding:var(--s5)}
+  .boas h1{font-size:30px}
+  .anel{width:110px;height:110px}
+  .inicio-grade{grid-template-columns:minmax(0,1fr)}
+  .plano li.agora{margin:0 calc(-1 * var(--s5));padding-left:calc(var(--s5) - 3px);padding-right:var(--s5)}
+  .tipo-linha{grid-template-columns:80px 1fr 56px;gap:var(--s2)}
   .barra-in{padding:0 var(--s4);gap:var(--s3)}
   :root{--barra-h:56px}
   .logo .lg-full{display:none}
@@ -585,12 +648,14 @@ var PREVER = {
   iniciar: function (st, iso, ms, id) {
     pausarRodando(st, iso, ms);
     var t = st.tarefas.find(function (x) { return x.tarefa_id === id; });
+    if (!t.responsavel_id) { t.responsavel_id = st.me.usuario_id; t.responsavel = st.me.nome; }
     t.status = 'Em andamento'; t.rodando_desde = iso; if (!t.iniciado_em) t.iniciado_em = iso;
     st.meuEstado = { estado: 'TAREFA', desde: iso, tarefa_id: id, tarefa_titulo: t.titulo }; novoTrecho(st, 'T', ms);
   },
   pausar: function (st, iso, ms) { pausarRodando(st, iso, ms); st.meuEstado = { estado: 'DISPONIVEL', desde: iso }; novoTrecho(st, 'D', ms); },
   concluir: function (st, iso, ms, id) {
     var t = st.tarefas.find(function (x) { return x.tarefa_id === id; });
+    if (!t.responsavel_id) { t.responsavel_id = st.me.usuario_id; t.responsavel = st.me.nome; }
     var rodava = !!t.rodando_desde;
     if (rodava) pausarRodando(st, iso, ms);
     t.status = 'Concluída'; t.concluido_em = iso; t.atrasada = false; t.parada = false;
@@ -625,6 +690,7 @@ function logoHtml(extra) {
 
 function views() {
   var v = [];
+  if (pode('tempo.proprio')) v.push(['inicio', 'Início']);
   if (pode('tempo.proprio')) v.push(['dia', 'Meu dia']);
   if (pode('tempo.proprio') || pode('tarefa.ver_todas')) v.push(['tarefas', 'Tarefas']);
   if (pode('rotina.gerenciar') || pode('tempo.proprio')) v.push(['rotinas', 'Rotinas']);
@@ -696,10 +762,10 @@ function render() {
   var mini = pode('tempo.proprio') ? '<span class="estado-mini"><span class="bol ' + me.estado + '"></span>' + ROT[me.estado] + (me.desde ? ' <span class="num" data-since="' + me.desde + '"></span>' : '') + '</span>' : '';
   var titulo = (vs.find(function (v) { return v[0] === S.view; }) || [0, 'Operações'])[1];
   var menu = vs.map(function (v) { return '<button class="' + (S.view === v[0] ? 'on' : '') + '" data-a="nav" data-v="' + v[0] + '"' + (S.view === v[0] ? ' aria-current="page"' : '') + '>' + v[1] + '</button>'; }).join('');
-  var corpo = ({ dia: vDia, tarefas: vTarefas, rotinas: vRotinas, fechamento: vFechamento, equipe: vEquipe, resumo: vResumo, admin: vAdmin }[S.view] || function () { return '<div class="vazio">Seu perfil ainda não tem telas.</div>'; })();
+  var corpo = ({ inicio: vInicio, dia: vDia, tarefas: vTarefas, rotinas: vRotinas, fechamento: vFechamento, equipe: vEquipe, resumo: vResumo, admin: vAdmin }[S.view] || function () { return '<div class="vazio">Seu perfil ainda não tem telas.</div>'; })();
   document.title = titulo + ' · Operações Metrocasa';
   /* barra inferior: as telas mais usadas no dia a dia primeiro; o resto vai para "Mais" */
-  var PRIO = ['dia', 'equipe', 'tarefas', 'rotinas', 'resumo', 'fechamento', 'admin'];
+  var PRIO = ['inicio', 'dia', 'equipe', 'tarefas', 'rotinas', 'resumo', 'fechamento', 'admin'];
   var ord = vs.slice().sort(function (x, y) { return PRIO.indexOf(x[0]) - PRIO.indexOf(y[0]); });
   var principais = ord.length > 5 ? ord.slice(0, 4) : ord, resto = ord.length > 5 ? ord.slice(4) : [];
   S.resto = resto;
@@ -710,6 +776,7 @@ function render() {
     '<div class="quem">' + mini + '<span class="nomeu">' + esc(st.me.nome) + '</span><button data-a="sair">Sair</button></div></div></header>' +
     '<main class="pag" id="conteudo" tabindex="-1">' + corpo + '</main><nav class="bnav" aria-label="Telas">' + bnav + '</nav>';
   pintar($('#app'), html);
+  if (dicaDe && !document.contains(dicaDe)) esconderDica();
   indicadores();
   if (S.animarResumo && S.view === 'resumo' && S.resumo) { S.animarResumo = false; contar(); }
   if (S.viewAnterior !== S.view) { var pg = $('.pag'); if (pg && S.viewAnterior) { pg.classList.remove('troca'); void pg.offsetWidth; pg.classList.add('troca'); } S.viewAnterior = S.view; }
@@ -721,6 +788,25 @@ function render() {
 }
 
 /* ======================= interações de interface ======================= */
+function info(txt) { return '<span class="info" tabindex="0" role="note" aria-label="' + esc(txt) + '" data-dica="' + esc(txt) + '">?</span>'; }
+/* dica própria: aparece ao passar o mouse ou focar com o teclado; some ao rolar */
+var dicaEl = null, dicaDe = null;
+function mostrarDica(el) {
+  var t = el.getAttribute('data-dica'); if (!t) return;
+  if (!dicaEl) { dicaEl = document.createElement('div'); dicaEl.id = 'dica'; dicaEl.setAttribute('role', 'tooltip'); document.body.appendChild(dicaEl); }
+  dicaDe = el; dicaEl.textContent = t;
+  var r = el.getBoundingClientRect(), w = dicaEl.offsetWidth, h = dicaEl.offsetHeight;
+  var x = Math.min(window.innerWidth - w - 8, Math.max(8, r.left + r.width / 2 - w / 2)), y = r.top - h - 8;
+  if (y < 8) y = r.bottom + 8;
+  dicaEl.style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(y) + 'px)';
+  dicaEl.classList.add('on');
+}
+function esconderDica() { if (dicaEl) dicaEl.classList.remove('on'); dicaDe = null; }
+document.addEventListener('mouseover', function (e) { var el = e.target.closest && e.target.closest('[data-dica]'); if (el) { if (el !== dicaDe) mostrarDica(el); } else if (dicaDe) esconderDica(); });
+document.addEventListener('focusin', function (e) { var el = e.target.closest && e.target.closest('[data-dica]'); if (el) mostrarDica(el); else esconderDica(); });
+document.addEventListener('focusout', esconderDica);
+window.addEventListener('scroll', esconderDica, { passive: true });
+document.addEventListener('click', function (e) { if (e.target.classList && e.target.classList.contains('info')) { e.stopPropagation(); mostrarDica(e.target); } }, true);
 function indicadores() {
   document.querySelectorAll('.menu,.alt').forEach(function (box) {
     var ind = box.querySelector('.ind'), on = box.querySelector('button.on');
@@ -802,19 +888,19 @@ function regua(F) {
 function trilho(L, F) {
   var W = F.b - F.a, pos = function (t) { return ((t - F.a) / W * 100).toFixed(3) + '%'; }, w = function (a, b) { return ((b - a) / W * 100).toFixed(3) + '%'; };
   var h = '<div class="ld-trilho" role="img" aria-label="Linha do dia">';
-  h += '<div class="jor" style="left:' + pos(L.ji) + ';width:' + w(L.ji, L.jf) + '" title="Jornada prevista ' + fH(L.ji) + ' às ' + fH(L.jf) + '"></div>';
+  h += '<div class="jor" style="left:' + pos(L.ji) + ';width:' + w(L.ji, L.jf) + '" data-dica="Jornada prevista: ' + fH(L.ji) + ' às ' + fH(L.jf) + '"></div>';
   for (var t = F.a + 3600000; t < F.b; t += 3600000) h += '<div class="hr" style="left:' + pos(t) + '"></div>';
   L.segs.forEach(function (s) {
     var tit = SEG[s.e] + ', ' + fH(s.a) + ' às ' + fH(s.b) + ' (' + fMin((s.b - s.a) / 60000) + ')' + (s.t ? ': ' + s.t : '') + (s.fora ? ': jornada sem expediente aberto' : '');
-    h += '<div class="sg ' + s.e + '" style="left:' + pos(s.a) + ';width:' + w(s.a, s.b) + '" title="' + esc(tit) + '"></div>';
+    h += '<div class="sg ' + s.e + '" style="left:' + pos(s.a) + ';width:' + w(s.a, s.b) + '" data-dica="' + esc(tit) + '"></div>';
   });
-  if (L.agora > F.a && L.agora < F.b) h += '<div class="ld-agora" style="left:' + pos(L.agora) + '" title="Agora"></div>';
+  if (L.agora > F.a && L.agora < F.b) h += '<div class="ld-agora" style="left:' + pos(L.agora) + '" data-dica="Agora, ' + fH(L.agora) + '"></div>';
   return h + '</div>';
 }
 function totais(h, comCob) {
   return '<div class="tot"><div><i class="am T"></i>Em tarefa <b>' + fMin(h.T) + '</b></div><div><i class="am I"></i>Intervalo <b>' + fMin(h.I) + '</b></div>' +
-    '<div><i class="am D"></i>Disponível <b>' + fMin(h.D) + '</b></div><div><i class="am S"></i>Sem atualização <b>' + fMin(h.S) + '</b></div>' +
-    (comCob ? '<div class="cob">' + (h.cobertura == null ? 'Fora da jornada' : pct(h.cobertura) + ' do dia registrado') + '</div>' : '') + '</div>';
+    '<div><i class="am D"></i>Disponível <b>' + fMin(h.D) + '</b></div><div><i class="am S"></i>Sem atualização' + info('Tempo da jornada sem nenhum registro: mais de ' + ((S.st && S.st.config.limiar_min) || 30) + ' min em Disponível sem movimentação, ou jornada sem expediente aberto. Não quer dizer que a pessoa estava parada.') + ' <b>' + fMin(h.S) + '</b></div>' +
+    (comCob ? '<div class="cob">' + (h.cobertura == null ? 'Fora da jornada' : pct(h.cobertura) + ' do dia registrado') + info('Parte da jornada até agora explicada por registros: tarefa, intervalo ou disponível. Não mede esforço.') + '</div>' : '') + '</div>';
 }
 
 /* ======================= tarefas: peças ======================= */
@@ -829,10 +915,12 @@ function tags(t) {
   return f;
 }
 var ABERTOS = ['Não iniciada', 'Em andamento', 'Em pausa', 'Aguardando terceiros'];
+function minha(t) { var me = S.st.me.usuario_id; return t.responsavel_id === me || (!t.responsavel_id && (t.candidatos || []).indexOf(me) >= 0); }
+function livre(t) { return !t.responsavel_id && (t.candidatos || []).length > 1; }
 function botoesTarefa(t, peq) {
-  if (t.responsavel_id !== S.st.me.usuario_id || !pode('tempo.proprio')) return '';
+  if (!minha(t) || !pode('tempo.proprio')) return '';
   var c = peq ? ' pq' : '', b = '';
-  if (t.status === 'Não iniciada') b += '<button class="btn esc' + c + '" data-a="tacao" data-acao="iniciar" data-id="' + t.tarefa_id + '">Iniciar</button>';
+  if (t.status === 'Não iniciada') b += '<button class="btn esc' + c + '" data-a="tacao" data-acao="iniciar" data-id="' + t.tarefa_id + '"' + (livre(t) ? ' data-dica="Ao iniciar, esta rotina passa a ser sua e sai da lista das outras pessoas."' : '') + '>Iniciar</button>';
   if (t.status === 'Em pausa' || t.status === 'Aguardando terceiros') b += '<button class="btn esc' + c + '" data-a="tacao" data-acao="iniciar" data-id="' + t.tarefa_id + '">Retomar</button>';
   if (t.status === 'Em andamento') b += '<button class="btn' + c + '" data-a="tacao" data-acao="pausar" data-id="' + t.tarefa_id + '">Pausar</button>';
   if (ABERTOS.indexOf(t.status) >= 0) b += '<button class="btn ok' + c + '" data-a="tacao" data-acao="concluir" data-id="' + t.tarefa_id + '">Concluir</button>';
@@ -842,7 +930,7 @@ function itemTarefa(t, comResp) {
   var prazo = t.prazo ? '<span class="' + (t.atrasada ? 'atrasado' : '') + '">até ' + fDH(t.prazo) + '</span>' : '';
   return '<div class="it' + (t.rodando_desde ? ' rod' : '') + '" data-a="abrir" data-id="' + t.tarefa_id + '" role="button" tabindex="0" aria-label="' + esc(t.titulo + ', ' + t.status) + '"><span class="pr pr' + prioIdx(t.prioridade) + '" title="Prioridade ' + esc(t.prioridade) + '"></span>' +
     '<div style="min-width:0"><div class="tt">' + esc(t.titulo) + '</div><div class="mt"><span>' + esc(t.status) + '</span>' + (comResp ? '<span>' + esc(t.responsavel) + '</span>' : '') +
-    prazo + (t.modelo_id ? '<span>Rotina' + (t.data_ref && t.data_ref !== S.st.hoje ? ' de ' + fDia(t.data_ref) : '') + '</span>' : (t.categoria ? '<span>' + esc(t.categoria) + '</span>' : '')) + tags(t) + '</div></div>' +
+    prazo + (livre(t) ? '<span class="tag livre" data-dica="Rotina compartilhada: quem iniciar primeiro assume e ela some para os outros.">Livre: ' + esc(t.responsavel) + '</span>' : '') + (t.modelo_id ? '<span>Rotina' + (t.data_ref && t.data_ref !== S.st.hoje ? ' de ' + fDia(t.data_ref) : '') + '</span>' : (t.categoria ? '<span>' + esc(t.categoria) + '</span>' : '')) + tags(t) + '</div></div>' +
     tempoTarefa(t) + '<div class="acs">' + botoesTarefa(t, true) + '</div></div>';
 }
 /* rotina com horários fixos vira uma linha só: os horários em chips e as ações do horário atual */
@@ -858,7 +946,7 @@ function itemRotinaHorarios(g) {
   var chip = function (t) {
     var c = t.status === 'Concluída' ? (Date.parse(t.concluido_em) <= Date.parse(t.prazo) ? 'ok' : 'atraso') : (t.nao_executada ? 'nao_feita' : (t.status === 'Em andamento' ? 'andamento' : (t === atual ? 'agora' : '')));
     var h = t.horario_ref, txt = Number(h.slice(0, 2)) + (h.slice(3) !== '00' ? ':' + h.slice(3) : '') + 'h';
-    return '<button class="slot ' + c + '" data-a="abrir" data-id="' + t.tarefa_id + '" title="' + txt + ': ' + esc(t.status) + (t.nao_executada ? ' (não executada)' : '') + '">' + txt + '</button>';
+    return '<button class="slot ' + c + '" data-a="abrir" data-id="' + t.tarefa_id + '" aria-label="' + txt + ': ' + esc(t.status) + '" data-dica="' + txt + ': ' + (t.status === 'Concluída' ? 'feita às ' + fH(t.concluido_em) + (Date.parse(t.concluido_em) > Date.parse(t.prazo) ? ', depois do prazo de ' + fH(t.prazo) : '') : (t.nao_executada ? 'não executada' : esc(t.status).toLowerCase() + ', prazo ' + fH(t.prazo))) + '">' + txt + '</button>';
   };
   return '<div class="it' + (atual && atual.rodando_desde ? ' rod' : '') + '" data-a="abrir" data-id="' + (atual || g[g.length - 1]).tarefa_id + '" role="button" tabindex="0" aria-label="' + esc(g[0].titulo) + '">' +
     '<span class="pr pr' + prioIdx(g[0].prioridade) + '"></span><div style="min-width:0"><div class="tt">' + esc(g[0].titulo) + '</div>' +
@@ -875,6 +963,82 @@ function ordenar(l) {
   });
 }
 
+/* ======================= Início ======================= */
+function saudacao(ms) { var h = Number(fH(ms).slice(0, 2)); return h < 12 ? 'Bom dia' : (h < 18 ? 'Boa tarde' : 'Boa noite'); }
+function hojeExtenso(ms) { var t = new Date(ms).toLocaleDateString('pt-BR', Object.assign({ weekday: 'long', day: 'numeric', month: 'long' }, TZ)); return t.charAt(0).toUpperCase() + t.slice(1); }
+function msDia(st, hhmm) { return Date.parse(st.hoje + 'T' + hhmm + ':00-03:00'); }
+/* o plano do dia é montado só com o que já existe: rotinas de hoje e tarefas com prazo hoje */
+function planoDoDia(st) {
+  var hoje = st.hoje, ini = Date.parse(hoje + 'T00:00:00-03:00'), fim = ini + 864e5;
+  var minhas = st.tarefas.filter(minha);
+  var itens = minhas.filter(function (t) {
+    if (t.modelo_id && t.data_ref === hoje) return t.status !== 'Cancelada' || t.nao_executada;
+    var p = Date.parse(t.prazo); return p >= ini && p < fim && t.status !== 'Cancelada';
+  }).map(function (t) {
+    var quando = t.horario_ref ? msDia(st, t.horario_ref) : Date.parse(t.prazo);
+    var est = t.status === 'Concluída' ? 'ok' : (t.nao_executada ? 'perdida' : (t.rodando_desde ? 'rodando' : (t.atrasada ? 'atrasada' : '')));
+    return { t: t, quando: quando, est: est, ate: !t.horario_ref };
+  }).sort(function (a, b) { return a.quando - b.quando; });
+  var semHora = minhas.filter(function (t) { return ABERTOS.indexOf(t.status) >= 0 && !t.modelo_id && (!t.prazo || Date.parse(t.prazo) < ini); });
+  var restantes = itens.filter(function (i) { return i.est !== 'ok' && i.est !== 'perdida'; });
+  var semEst = restantes.filter(function (i) { return !Number(i.t.estimado_min); }).length;
+  var previsto = restantes.reduce(function (a, i) { return a + (Number(i.t.estimado_min) || 0) - (i.t.registrado_min && i.est === 'rodando' ? 0 : 0); }, 0);
+  var agora = agoraMs(), ji = msDia(st, st.me.jornada_inicio || '09:00'), jf = msDia(st, st.me.jornada_fim || '18:00');
+  var restaJornada = Math.max(0, (jf - Math.max(agora, ji)) / 60000);
+  return { itens: itens, semHora: semHora, previsto: previsto, semEst: semEst, restaJornada: restaJornada, ji: ji, jf: jf, agora: agora,
+    rotTotal: itens.filter(function (i) { return i.t.modelo_id; }).length, rotFeitas: itens.filter(function (i) { return i.t.modelo_id && i.est === 'ok'; }).length };
+}
+function pilula(i) {
+  var t = i.t, hora = t.horario_ref ? '' : 'até ' + fH(t.prazo) + ' ';
+  var dica = (t.horario_ref ? t.horario_ref + ': ' : 'Prazo ' + fH(t.prazo) + ': ') + t.titulo + ' — ' + (i.est === 'ok' ? 'feita' : (i.est === 'perdida' ? 'não executada' : t.status.toLowerCase())) + (Number(t.estimado_min) ? ', cerca de ' + fMin(t.estimado_min) : '') + (livre(t) ? '. Compartilhada: ' + t.responsavel : '');
+  return '<button class="pi ' + i.est + '" data-a="abrir" data-id="' + t.tarefa_id + '" data-dica="' + esc(dica) + '"><span class="st"></span>' + esc(hora) + esc(t.titulo.length > 38 ? t.titulo.slice(0, 36) + '…' : t.titulo) + '</button>';
+}
+function vInicio() {
+  var st = S.st, me = st.meuEstado, pl = planoDoDia(st), agora = pl.agora;
+  var nome = st.me.nome.split(' ')[0];
+  var horaAgora = Number(fH(agora).slice(0, 2));
+  var h0 = Number(fH(pl.ji).slice(0, 2)), h1 = Math.max(Number(fH(pl.jf).slice(0, 2)) - 1, h0);
+  pl.itens.forEach(function (i) { var h = Number(fH(i.quando).slice(0, 2)); h0 = Math.min(h0, h); h1 = Math.max(h1, h); });
+  var porHora = {};
+  pl.itens.forEach(function (i) { var h = Number(fH(i.quando).slice(0, 2)); (porHora[h] = porHora[h] || []).push(i); });
+  var projeto = st.tarefas.filter(function (t) { return minha(t) && ABERTOS.indexOf(t.status) >= 0 && t.categoria === 'Projeto'; })[0];
+  var linhas = '';
+  for (var h = h0; h <= h1; h++) {
+    var cls = h < horaAgora ? 'passou' : (h === horaAgora ? 'agora' : '');
+    var its = porHora[h] || [];
+    linhas += '<li class="' + cls + '"><span class="hora">' + ('0' + h).slice(-2) + 'h</span><div>' +
+      (its.length ? '<div class="itens">' + its.map(pilula).join('') + '</div>' : '<div class="livre">' + (projeto && h >= horaAgora ? 'Livre para ' + esc(projeto.titulo) : 'Livre') + '</div>') + '</div></li>';
+  }
+  var resumoTxt;
+  var nRot = pl.rotTotal, nTar = pl.itens.length - nRot;
+  if (!pl.itens.length) resumoTxt = 'Você não tem rotinas nem prazos para hoje. Um bom dia para avançar nos projetos.';
+  else resumoTxt = 'Hoje você tem ' + (nRot ? plural(nRot, 'rotina', 'rotinas') : '') + (nRot && nTar ? ' e ' : '') + (nTar ? plural(nTar, 'tarefa com prazo', 'tarefas com prazo') : '') + '. ' +
+    (pl.rotFeitas ? plural(pl.rotFeitas, 'rotina já foi feita', 'rotinas já foram feitas') + '. ' : '') +
+    (pl.semHora.length ? plural(pl.semHora.length, 'tarefa está', 'tarefas estão') + ' sem horário ou atrasada' + (pl.semHora.length > 1 ? 's' : '') + '.' : '');
+  var acoes = me.estado === 'FORA' ? '<button class="btn pri gr" data-a="exp_ini">Iniciar expediente</button><button class="btn gr" data-a="nav" data-v="dia">Ver meu dia</button>'
+    : '<button class="btn esc gr" data-a="nav" data-v="dia">Ir para o meu dia</button>' + (me.estado === 'TAREFA' ? '<span class="sec2" style="align-self:center">Em andamento: <b>' + esc(me.tarefa_titulo) + '</b> há <span class="num" data-since="' + me.desde + '"></span></span>' : '');
+  var C = 2 * Math.PI * 54, frac = pl.rotTotal ? pl.rotFeitas / pl.rotTotal : 0;
+  var anel = '<div class="anel" role="img" aria-label="' + pl.rotFeitas + ' de ' + pl.rotTotal + ' rotinas feitas hoje" data-dica="Rotinas de hoje: ' + pl.rotFeitas + ' feitas de ' + pl.rotTotal + '"><svg viewBox="0 0 132 132"><circle class="fundo-anel" cx="66" cy="66" r="54"/><circle class="valor" cx="66" cy="66" r="54" style="--c:' + C.toFixed(1) + ';stroke-dasharray:' + C.toFixed(1) + ';stroke-dashoffset:' + (C * (1 - frac)).toFixed(1) + '"/></svg>' +
+    '<div class="meio"><b>' + pl.rotFeitas + '/' + pl.rotTotal + '</b><span>rotinas<br>de hoje</span></div></div>';
+  var previsto = Math.round(pl.previsto), resta = Math.round(pl.restaJornada);
+  var pctCarga = resta ? Math.min(100, previsto / resta * 100) : (previsto ? 100 : 0);
+  var carga = '<section class="painel pad carga"><h3>Carga prevista' + info('Soma do tempo estimado das rotinas e tarefas de hoje que ainda faltam, comparada ao tempo que sobra da sua jornada. Itens sem estimativa não entram na conta.') + '</h3>' +
+    '<div style="display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 8px;margin-top:10px"><span class="num-grande">' + fMin(previsto) + '</span><span class="sec2">de ' + fMin(resta) + ' que restam na jornada</span></div>' +
+    '<div class="barra-carga"><i class="' + (previsto > resta ? 'excede' : '') + '" style="width:' + pctCarga + '%"></i></div>' +
+    '<p class="pq sec2" style="margin:0">' + (previsto > resta ? 'O previsto passa do tempo que resta: vale repriorizar ou pedir ajuda.' : (resta - previsto >= 60 ? 'Sobram cerca de ' + fMin(resta - previsto) + ' para projetos e demandas novas.' : 'Dia praticamente cheio.')) +
+    (pl.semEst ? ' ' + plural(pl.semEst, 'item ainda não tem', 'itens ainda não têm') + ' tempo estimado.' : '') + '</p></section>';
+  var semHora = pl.semHora.length ? '<section class="painel pad bloco"><h3>Sem horário definido</h3><p class="sec2 pq" style="margin:2px 0 10px">Tarefas abertas sem prazo hoje ou já atrasadas. Encaixe nos horários livres.</p><div class="plano"><div class="itens">' +
+    ordenar(pl.semHora).map(function (t) { return pilula({ t: t, est: t.rodando_desde ? 'rodando' : (t.atrasada ? 'atrasada' : ''), quando: 0 }).replace('até ' + fH(t.prazo) + ' ', t.atrasada ? 'atrasada ' : ''); }).join('') + '</div></div></section>' : '';
+  var eq = st.equipe && st.equipe.length ? '<section class="painel pad bloco"><div class="cab"><h3>Equipe agora</h3><button class="btn lim pq" data-a="nav" data-v="equipe">Ver equipe</button></div>' + st.equipe.map(function (p) {
+    return '<div class="eq-mini"><span class="ini p">' + esc(ini(p.nome)) + '</span><b>' + esc(p.nome.split(' ')[0]) + '</b><span class="pq sec2 oq"><span class="bol ' + p.estado + '"></span><span>' + (p.estado === 'TAREFA' ? esc(p.tarefa_atual) : ROT[p.estado]) + '</span></span><span class="tag ' + (p.rotinas_hoje && p.rotinas_feitas === p.rotinas_hoje ? 'ok' : 'cinza') + '" data-dica="Rotinas de hoje feitas">' + p.rotinas_feitas + '/' + p.rotinas_hoje + '</span></div>';
+  }).join('') + '</section>' : '';
+  var primeira = !S.boasVistas; S.boasVistas = true;
+  return '<section class="painel boas' + (primeira && MOV ? ' entra-1' : '') + '"><div><div class="data">' + hojeExtenso(agora) + '</div><h1>' + saudacao(agora) + ', ' + esc(nome) + '.</h1>' +
+    '<p class="res">' + resumoTxt + '</p><div class="acoes">' + acoes + '</div></div>' + (pl.rotTotal ? anel : '') + '</section>' +
+    '<div class="inicio-grade"><section class="painel pad"><div class="cab"><h3>Como fica o seu dia</h3><span class="sec2 pq">jornada ' + esc(st.me.jornada_inicio) + ' às ' + esc(st.me.jornada_fim) + '</span></div><ol class="plano">' + linhas + '</ol></section>' +
+    '<div>' + carga + semHora + eq + '</div></div>';
+}
+
 /* ======================= Meu dia ======================= */
 function vDia() {
   var st = S.st, me = st.meuEstado, h = st.meuHoje;
@@ -889,7 +1053,7 @@ function vDia() {
       '<button class="btn" data-a="int_ini">Fazer intervalo</button><button class="btn lim" data-a="exp_fim">Encerrar expediente</button>';
   }
   var eRotHoje = function (t) { return t.modelo_id && t.data_ref === st.hoje && (t.status !== 'Cancelada' || t.nao_executada); };
-  var rotHoje = st.tarefas.filter(function (t) { return t.responsavel_id === st.me.usuario_id && eRotHoje(t); })
+  var rotHoje = st.tarefas.filter(function (t) { return minha(t) && eRotHoje(t); })
     .sort(function (a, b) { return (a.status === 'Concluída') - (b.status === 'Concluída') || (Date.parse(a.prazo) || 9e15) - (Date.parse(b.prazo) || 9e15); });
   var feitas = rotHoje.filter(function (t) { return t.status === 'Concluída'; }).length;
   var minhas = st.tarefas.filter(function (t) { return t.responsavel_id === st.me.usuario_id && ABERTOS.indexOf(t.status) >= 0 && !eRotHoje(t); });
@@ -1082,11 +1246,11 @@ function vRotinas() {
   if (!r.rotinas.length) return cab + '<div class="lista vazio">' + (r.gerencia ? 'Nenhuma rotina ainda. Crie a primeira e ela aparece hoje mesmo no Meu dia do responsável.' : 'Você ainda não tem rotinas.') + '</div>';
   return cab + '<section class="lista">' + r.rotinas.map(function (x) {
     return '<div class="rot-lin' + (x.ativo ? '' : ' off') + '"><div style="min-width:0"><div class="tt">' + esc(x.titulo) + (x.ativo ? '' : ' <span class="tag cinza">Pausada</span>') + '</div>' +
-      '<div class="mt">' + esc(x.responsavel) + ', ' + textoDias(x.dias).toLowerCase() + ', ' + textoFreq(x) + (x.estimado_min ? ', cerca de ' + fMin(x.estimado_min) + (x.horarios.length ? ' cada' : '') : '') +
+      '<div class="mt">' + esc(x.responsavel) + ((x.responsaveis || []).length > 1 ? ' (quem iniciar primeiro assume)' : '') + ', ' + textoDias(x.dias).toLowerCase() + ', ' + textoFreq(x) + (x.estimado_min ? ', cerca de ' + fMin(x.estimado_min) + (x.horarios.length ? ' cada' : '') : '') +
       (x.vigente_desde && x.vigente_desde > S.st.hoje ? '. Começa em ' + fDia(x.vigente_desde) : '') + '</div></div>' +
       '<div class="semana" aria-label="Últimos 7 dias">' + x.hist.map(function (h) {
         var wd = new Date(Date.parse(h.dia + 'T12:00:00-03:00')).getUTCDay();
-        return '<div class="' + h.s + '" title="' + fDia(h.dia) + ': ' + (h.total ? h.feitas + ' de ' + h.total + ' feitas' : SEM_TXT[h.s]) + '">' + DIAS[wd].slice(0, 3) + '<b></b></div>';
+        return '<div class="' + h.s + '" data-dica="' + fDia(h.dia) + ': ' + (h.total ? h.feitas + ' de ' + h.total + ' feitas' : SEM_TXT[h.s]) + '">' + DIAS[wd].slice(0, 3) + '<b></b></div>';
       }).join('') + '</div>' +
       '<div class="acs">' + (r.gerencia ? '<button class="btn pq" data-a="editarotina" data-id="' + x.rotina_id + '">Editar</button><button class="btn lim pq" data-a="alternarotina" data-id="' + x.rotina_id + '">' + (x.ativo ? 'Pausar' : 'Reativar') + '</button>' : '') + '</div></div>';
   }).join('') + '</section>' +
@@ -1099,7 +1263,8 @@ function janelaRotina(x) {
   var pessoas = st.usuarios.filter(function (u) { return u.perfil !== 'DIRETOR'; });
   janela('<div class="gcab"><h2>' + (novo ? 'Nova rotina' : 'Editar rotina') + '</h2><button class="btn lim" data-a="fecha">Fechar</button></div><div class="grade">' +
     '<label class="campo tudo"><span>O que precisa ser feito</span><input class="inp" id="r_tit" maxlength="200" value="' + esc(x.titulo) + '" placeholder="Ex.: Atualizar aba Estágio da Base SV"></label>' +
-    '<label class="campo"><span>Responsável</span><select class="inp" id="r_resp">' + pessoas.map(function (u) { return '<option value="' + u.usuario_id + '"' + (u.usuario_id === x.responsavel_id ? ' selected' : '') + '>' + esc(u.nome) + '</option>'; }).join('') + '</select></label>' +
+    '<div class="campo tudo"><span>Responsáveis' + info('Com mais de uma pessoa, a rotina aparece para todas. Quem iniciar primeiro assume e ela some da lista das outras.') + '</span><div class="dias">' +
+      pessoas.map(function (u) { return '<label><input type="checkbox" class="r_resp" value="' + u.usuario_id + '"' + ((x.responsaveis || [x.responsavel_id]).indexOf(u.usuario_id) >= 0 ? ' checked' : '') + '><span>' + esc(u.nome.split(' ')[0]) + '</span></label>'; }).join('') + '</div></div>' +
     '<label class="campo"><span>Começa em</span><input class="inp" type="date" id="r_ini" value="' + esc(x.vigente_desde || '') + '"></label>' +
     '<div class="campo tudo"><span>Quantas vezes por dia</span><div class="freq" role="radiogroup">' +
       '<label><input type="radio" name="r_freq" value="uma"' + (x.horarios && x.horarios.length ? '' : ' checked') + '> Uma vez</label>' +
@@ -1124,7 +1289,9 @@ function salvarRotina(id) {
   if (!validar('r_tit', $('#r_tit').value.trim(), 'Escreva o que precisa ser feito.')) { bt.classList.remove('carregando'); return; }
   if (!dias.length) { bt.classList.remove('carregando'); toast('Escolha ao menos um dia da semana.', 'erro'); return; }
   var atual = id ? S.rot.rotinas.find(function (r) { return r.rotina_id === id; }) : null;
-  api('rotina_salvar', { rotina_id: id || '', titulo: $('#r_tit').value, responsavel_id: $('#r_resp').value, hora_prazo: porHorario ? '' : $('#r_hora').value, horarios: horarios, vigente_desde: $('#r_ini').value, dias: dias,
+  var resps = Array.prototype.map.call(document.querySelectorAll('.r_resp:checked'), function (c) { return c.value; });
+  if (!resps.length) { bt.classList.remove('carregando'); toast('Escolha ao menos um responsável.', 'erro'); return; }
+  api('rotina_salvar', { rotina_id: id || '', titulo: $('#r_tit').value, responsaveis: resps, hora_prazo: porHorario ? '' : $('#r_hora').value, horarios: horarios, vigente_desde: $('#r_ini').value, dias: dias,
     prioridade: $('#r_prio').value, estimado_min: $('#r_est').value, descricao: $('#r_desc').value, categoria: 'Rotina', ativo: atual ? atual.ativo : true }, true)
     .then(function (d) { if (d) { S.rot = d; fechar(); toast(id ? 'Rotina salva.' : 'Rotina criada.', 'ok'); atualizar(); } });
 }
@@ -1168,7 +1335,7 @@ function vEquipe() {
     '<section class="painel"><div class="eq-regua"><span class="vz"></span>' + regua(F) + '<span class="vz"></span></div>' + eq.map(function (p) {
       var faz = p.estado === 'TAREFA' ? esc(p.tarefa_atual) : (p.estado === 'FORA' ? 'Expediente não iniciado' : ROT[p.estado]);
       return '<div class="eq-linha"><div><div class="eq-nome"><span class="ini">' + esc(ini(p.nome)) + '</span><div style="min-width:0"><b>' + esc(p.nome) + '</b><span class="sec2"><span class="bol ' + p.estado + '"></span>' + ROT[p.estado] + (p.desde ? ' há <span class="num" data-since="' + p.desde + '"></span>' : '') + '</span></div></div>' +
-        '<div class="eq-faz" title="' + faz + '">' + faz + '</div></div>' +
+        '<div class="eq-faz" data-dica="' + faz + '">' + faz + '</div></div>' +
         '<div>' + trilho(p.linha, F) + '<div class="pq sec2" style="margin-top:6px">' + fMin(p.hoje.T) + ' em tarefa, ' + fMin(p.hoje.S) + ' sem atualização. Último registro ' + fRel(p.ultimo_evento) + '.</div></div>' +
         '<div class="eq-num"><div><b class="' + (p.rotinas_hoje && p.rotinas_feitas < p.rotinas_hoje ? '' : '') + '">' + (p.rotinas_hoje ? p.rotinas_feitas + '/' + p.rotinas_hoje : '—') + '</b><span>rotinas</span></div><div><b>' + p.concluidas_hoje + '</b><span>concluídas</span></div><div><b>' + p.abertas + '</b><span>abertas</span></div><div><b class="' + (p.atrasadas ? 'r' : '') + '">' + p.atrasadas + '</b><span>atrasadas</span></div></div></div>';
     }).join('') + '<div style="padding:4px 22px 18px">' + totais({ T: 0, I: 0, D: 0, S: 0 }, false).replace(/<b>[^<]*<\/b>/g, '') + '</div></section>' +
@@ -1201,6 +1368,18 @@ function grafico(dias) {
   });
   return s + '</svg>';
 }
+function paraOndeFoi(l) {
+  if (!l.length) return '';
+  var max = Math.max.apply(null, l.map(function (p) { return p.rotina + p.projeto + p.demanda; }).concat([1]));
+  var seg = function (cls, v, tot, nome) { if (!v) return ''; var pc = Math.round(v / tot * 100); return '<i class="' + cls + '" style="width:' + (v / tot * 100) + '%" data-dica="' + nome + ': ' + fMin(v) + ' (' + pc + '%)">' + (pc >= 12 ? pc + '%' : '') + '</i>'; };
+  return '<section class="painel pad bloco"><div class="cab"><h3>Para onde foi o tempo em tarefa' + info('Soma do tempo com cronômetro rodando nos últimos 7 dias, separada em rotinas (geradas pelo sistema), projetos (categoria Projeto) e demais demandas. A barra de cada pessoa é proporcional a quem mais registrou.') + '</h3>' +
+    '<div class="tot" style="margin:0"><div><i class="am" style="background:var(--vinho)"></i>Rotinas</div><div><i class="am" style="background:var(--marca)"></i>Projetos</div><div><i class="am" style="background:var(--n300)"></i>Demandas</div></div></div>' +
+    l.map(function (p) {
+      var tot = p.rotina + p.projeto + p.demanda;
+      return '<div class="tipo-linha"><b>' + esc(p.nome.split(' ')[0]) + '</b><div style="width:' + Math.max(4, tot / max * 100) + '%"><div class="tipo-barra">' +
+        (tot ? seg('rotina', p.rotina, tot, 'Rotinas') + seg('projeto', p.projeto, tot, 'Projetos') + seg('demanda', p.demanda, tot, 'Demandas') : '') + '</div></div><span class="num d" style="text-align:right">' + fMin(tot) + '</span></div>';
+    }).join('') + '</section>';
+}
 function vResumo() {
   var r = S.resumo;
   if (!r) return esqueleto(3) + '<div class="bloco">' + esqueleto(6) + '</div>';
@@ -1208,10 +1387,11 @@ function vResumo() {
   return '<div class="cab"><h2>Últimos 7 dias</h2><span class="sec2">' + fDia(r.periodo.de) + ' a ' + fDia(r.periodo.ate) + '</span><button class="btn lim pq" data-a="recarregaresumo">Atualizar</button></div>' +
     '<div class="grandes"><div><b data-conta="' + k.concluidas_7d + '">' + k.concluidas_7d + '</b><span>Entregas</span><small>' + k.criadas_7d + ' tarefas novas</small></div>' +
     '<div><b' + (k.prazo_7d != null ? ' data-conta="' + Math.round(k.prazo_7d * 100) + '" data-suf="%"' : '') + '>' + pct(k.prazo_7d) + '</b><span>No prazo</span><small>' + (k.prazo_base ? 'de ' + plural(k.prazo_base, 'entrega com prazo', 'entregas com prazo') : 'nenhuma entrega com prazo') + '</small></div>' +
-    '<div><b class="' + (k.rotinas_7d != null && k.rotinas_7d < .8 ? 'r' : '') + '">' + pct(k.rotinas_7d) + '</b><span>Rotinas no prazo</span><small>' + (k.rotinas_base ? 'de ' + plural(k.rotinas_base, 'ocorrência', 'ocorrências') : 'nenhuma rotina no período') + '</small></div>' +
+    '<div><b class="' + (k.rotinas_7d != null && k.rotinas_7d < .8 ? 'r' : '') + '">' + pct(k.rotinas_7d) + '</b><span>Rotinas no prazo' + info('Ocorrências de rotina dos últimos 7 dias cujo prazo já passou: quantas foram concluídas dentro do prazo.') + '</span><small>' + (k.rotinas_base ? 'de ' + plural(k.rotinas_base, 'ocorrência', 'ocorrências') : 'nenhuma rotina no período') + '</small></div>' +
     '<div><b>' + k.abertas + '</b><span>Em aberto</span><small>hoje</small></div>' +
     '<div><b class="' + (k.atrasadas ? 'r' : '') + '">' + k.atrasadas + '</b><span>Atrasadas</span><small>abertas e com prazo vencido</small></div>' +
     '<div><b>' + k.aguardando + '</b><span>Aguardando terceiros</span><small>dependem de outra área</small></div></div>' +
+    paraOndeFoi(r.tempoPorTipo || []) +
     '<section class="painel pad bloco"><div class="cab"><h3>Criadas e concluídas por dia</h3><div class="tot" style="margin:0"><div><i class="am" style="background:#B7BBC2"></i>Criadas</div><div><i class="am" style="background:#C41420"></i>Concluídas</div></div></div>' + grafico(r.porDia) + '</section>' +
     '<div class="duas bloco"><section class="painel pad"><h3>Equipe nos 7 dias</h3><div class="rolar" style="margin-top:8px"><table class="tb"><thead><tr><th>Pessoa</th><th class="d">Em tarefa</th><th class="d">Do dia registrado</th><th class="d">Entregas</th><th class="d">Abertas</th></tr></thead><tbody>' +
     r.pessoas.map(function (p) { return '<tr><td><b>' + esc(p.nome) + '</b></td><td class="d num">' + fMin(p.T) + '</td><td class="d num">' + (p.J ? pct(Math.max(0, (p.J - p.S) / p.J)) : '—') + '</td><td class="d num">' + p.concluidas + '</td><td class="d num">' + p.abertas + '</td></tr>'; }).join('') +
