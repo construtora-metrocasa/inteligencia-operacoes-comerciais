@@ -762,7 +762,9 @@ function render() {
   var mini = pode('tempo.proprio') ? '<span class="estado-mini"><span class="bol ' + me.estado + '"></span>' + ROT[me.estado] + (me.desde ? ' <span class="num" data-since="' + me.desde + '"></span>' : '') + '</span>' : '';
   var titulo = (vs.find(function (v) { return v[0] === S.view; }) || [0, 'Operações'])[1];
   var menu = vs.map(function (v) { return '<button class="' + (S.view === v[0] ? 'on' : '') + '" data-a="nav" data-v="' + v[0] + '"' + (S.view === v[0] ? ' aria-current="page"' : '') + '>' + v[1] + '</button>'; }).join('');
-  var corpo = ({ inicio: vInicio, dia: vDia, tarefas: vTarefas, rotinas: vRotinas, fechamento: vFechamento, equipe: vEquipe, resumo: vResumo, admin: vAdmin }[S.view] || function () { return '<div class="vazio">Seu perfil ainda não tem telas.</div>'; })();
+  var SERVIDOR = 'MVP v4';
+  var avisoServ = st.versao && st.versao !== SERVIDOR && pode('admin.usuarios') ? '<div class="aviso"><span>O servidor está na versão ' + esc(st.versao) + ' e esta tela espera a ' + SERVIDOR + '. Publique o Code.gs novo no Apps Script (Gerenciar implantações, lápis, Nova versão). Até lá, algumas funções podem falhar.</span></div>' : '';
+  var corpo = avisoServ + ({ inicio: vInicio, dia: vDia, tarefas: vTarefas, rotinas: vRotinas, fechamento: vFechamento, equipe: vEquipe, resumo: vResumo, admin: vAdmin }[S.view] || function () { return '<div class="vazio">Seu perfil ainda não tem telas.</div>'; })();
   document.title = titulo + ' · Operações Metrocasa';
   /* barra inferior: as telas mais usadas no dia a dia primeiro; o resto vai para "Mais" */
   var PRIO = ['inicio', 'dia', 'equipe', 'tarefas', 'rotinas', 'resumo', 'fechamento', 'admin'];
@@ -1291,7 +1293,7 @@ function salvarRotina(id) {
   var atual = id ? S.rot.rotinas.find(function (r) { return r.rotina_id === id; }) : null;
   var resps = Array.prototype.map.call(document.querySelectorAll('.r_resp:checked'), function (c) { return c.value; });
   if (!resps.length) { bt.classList.remove('carregando'); toast('Escolha ao menos um responsável.', 'erro'); return; }
-  api('rotina_salvar', { rotina_id: id || '', titulo: $('#r_tit').value, responsaveis: resps, hora_prazo: porHorario ? '' : $('#r_hora').value, horarios: horarios, vigente_desde: $('#r_ini').value, dias: dias,
+  api('rotina_salvar', { rotina_id: id || '', titulo: $('#r_tit').value, responsaveis: resps, responsavel_id: resps[0], hora_prazo: porHorario ? '' : $('#r_hora').value, horarios: horarios, vigente_desde: $('#r_ini').value, dias: dias,
     prioridade: $('#r_prio').value, estimado_min: $('#r_est').value, descricao: $('#r_desc').value, categoria: 'Rotina', ativo: atual ? atual.ativo : true }, true)
     .then(function (d) { if (d) { S.rot = d; fechar(); toast(id ? 'Rotina salva.' : 'Rotina criada.', 'ok'); atualizar(); } });
 }
